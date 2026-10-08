@@ -8,7 +8,10 @@
 
 <body>
   <h1>Janken GAME!</h1>
-  <p>Hi [[${userName}]]</p>
+
+  <div th:if="${userName}">
+    <p>Hi [[${userName}]]</p>
+  </div>
 </body>
 
 </html>
