@@ -15,11 +15,15 @@ public class JankenController {
 
   @GetMapping("/janken")
   public String janken(@RequestParam(required = false) String userHand, ModelMap model) {
-    Janken janken = new Janken(userHand);
 
-    model.addAttribute("userHand", janken.getUserHand());
-    model.addAttribute("cpuHand", janken.getCpuHand());
-    model.addAttribute("result", janken.getResult());
+    if (userHand != null) {
+      Janken janken = new Janken(userHand);
+
+      model.addAttribute("userHand", janken.getUserHand());
+      model.addAttribute("cpuHand", janken.getCpuHand());
+      model.addAttribute("result", janken.getResult());
+    }
+
     return "janken.html";
   }
 
