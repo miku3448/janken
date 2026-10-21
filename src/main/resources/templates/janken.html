@@ -11,21 +11,22 @@
 
   <h1>Janken GAME!</h1>
 
-  <div th:if="${users}">
-    <p>エントリー</p>
+  <div th:if="${users}">Hi [[${login_user}]]</div>
+
+  <div>
+    <h2>エントリー</h2>
     <ul>
-      <li th:each="userName : ${users}" th:text="${userName}"></li>
+      <li th:each="user : ${users}" th:text="${user.userName}"></li>
     </ul>
   </div>
 
-  <a href="/janken?userHand=Gu">グー</a>
-  <a href="/janken?userHand=Gu">チョキ</a>
-  <a href="/janken?userHand=Gu">パー</a>
-
-  <div th:if="${userHand}">
-    <p>あなたの手 [[${userHand}]]</p>
-    <p>相手の手 [[${cpuHand}]]</p>
-    <p>結果 [[${result}]]</p>
+  <div th:each="chamber,stat:${chambers5}">
+    <tr>
+      <td>Index:[[${stat.index}]]</td>
+      <td>ID:[[${chamber.id}]]</td>
+      <td>ユーザ名:[[${chamber.userName}]]</d>
+      <td>小屋名:[[${chamber.chamberName}]]</td>
+    </tr>
   </div>
 </body>
 
