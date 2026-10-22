@@ -20,13 +20,13 @@
     </ul>
   </div>
 
-  <div th:each="chamber,stat:${chambers5}">
-    <tr>
-      <td>Index:[[${stat.index}]]</td>
-      <td>ID:[[${chamber.id}]]</td>
-      <td>ユーザ名:[[${chamber.userName}]]</d>
-      <td>小屋名:[[${chamber.chamberName}]]</td>
-    </tr>
+  <h2>試合結果</h2>
+  <div th:each="match :${matches}">
+    id: [[${match.matchId}]]
+    user1: [[${match.user1}]]
+    user2: [[${match.user2}]]
+    user1Hand: [[${match.user1Hand}]]
+    user2Hand: [[${match.user2Hand}]] <br />
   </div>
 </body>
 
