@@ -19,7 +19,7 @@ public interface UserMapper {
 
   // userNameからuserを探してくる
   @Select("SELECT * from users where userName = #{userName}")
-  ArrayList<User> selectAllByUserName(String userName);
+  User selectByName(String userName);
 
   // userNameを指定してuserを追加（Idは自動設定）
   @Insert("INSERT INTO users (userName) VALUES (#{userName});")
