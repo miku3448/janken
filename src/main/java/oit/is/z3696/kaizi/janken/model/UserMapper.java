@@ -14,7 +14,7 @@ public interface UserMapper {
   ArrayList<User> selectAllUser();
 
   // userIdからuserを探してくる
-  @Select("SELECT * from users where id = #{id}")
+  @Select("SELECT * from users where userId = #{id}")
   User selectById(int id);
 
   // userNameからuserを探してくる
