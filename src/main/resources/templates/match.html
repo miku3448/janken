@@ -13,9 +13,14 @@
   <h2>[[${login_user}]] V.S. [[${user2.userName}]]</h2>
 
   <div>
-    <a href="/match?userHand=Gu">ぐー</a>
-    <a href="/match?userHand=Choki">ちょき</a>
-    <a href="/match?userHand=Pa">ぱー</a>
+    <a th:href="@{/fight(id=${user2.userId},userHand='Gu')}">ぐー</a>
+    <a th:href="@{/fight(id=${user2.userId},userHand='Choki')}">ちょき</a>
+    <a th:href="@{/fight(id=${user2.userId},userHand='Pa')}">ぱー</a>
+    <div th:if="${result}">
+      あなたの手 [[${user1_hand}]]<br />
+      相手の手 [[${user2_hand}]]<br />
+      結果 [[${result}]]<br />
+    </div>
   </div>
 
   <a href="/janken">もどる</a>

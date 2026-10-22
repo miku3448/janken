@@ -48,8 +48,7 @@ public class JankenController {
   }
 
   @GetMapping("/match")
-  public String match(@RequestParam int id, @RequestParam(required = false) String userHand, ModelMap model,
-      Principal prin) {
+  public String match(@RequestParam int id, ModelMap model, Principal prin) {
 
     String loginUser = prin.getName(); // ログインユーザ情報
     this.entry.addUser(loginUser);
@@ -58,13 +57,34 @@ public class JankenController {
     User user2 = userMapper.selectById(id);
     model.addAttribute("user2", user2);
 
-    if (userHand != null) {
-      Janken janken = new Janken(userHand);
+    return "match.html";
+  }
 
-      model.addAttribute("userHand", janken.getUserHand());
-      model.addAttribute("cpuHand", janken.getCpuHand());
-      model.addAttribute("result", janken.getResult());
-    }
+  @GetMapping("/fight")
+  public String fight(@RequestParam int id, @RequestParam(required = false) String userHand, ModelMap model,
+      Principal prin) {
+    String loginUser = prin.getName(); // ログインユーザ情報
+    this.entry.addUser(loginUser);
+    model.addAttribute("login_user", loginUser);
+
+    User user1 = userMapper.selectByName(loginUser);
+    User user2 = userMapper.selectById(id);
+    model.addAttribute("user2", user2);
+
+    Janken janken = new Janken(userHand);
+    model.addAttribute("user1_hand", janken.getUserHand());
+    model.addAttribute("user2_hand", janken.getCpuHand());
+    model.addAttribute("result", janken.getResult());
+
+    // このMatchをinsert
+    Match match = new Match();
+    match.setUser1(user1.getUserId());
+    match.setUser2(user2.getUserId());
+    match.setUser1Hand(janken.getUserHand());
+    match.setUser2Hand(janken.getCpuHand());
+
+    matchMapper.insertMatch(match);
+
     return "match.html";
   }
 }

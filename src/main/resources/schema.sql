@@ -1,9 +1,9 @@
 CREATE TABLE users (
-    userId INT NOT NULL PRIMARY KEY,
+    userId INT AUTO_INCREMENT PRIMARY KEY,
     userName VARCHAR NOT NULL
 );
 CREATE TABLE matches (
-    matchId INT NOT NULL PRIMARY KEY,
+    matchId INT AUTO_INCREMENT PRIMARY KEY,
     user1 INT,
     user2 INT,
     user1Hand VARCHAR,
