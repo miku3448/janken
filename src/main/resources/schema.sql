@@ -7,5 +7,13 @@ CREATE TABLE matches (
     user1 INT,
     user2 INT,
     user1Hand VARCHAR,
-    user2Hand VARCHAR
+    user2Hand VARCHAR,
+    isActive BOOLEAN
+);
+CREATE TABLE matchinfo (
+    matchId INT AUTO_INCREMENT PRIMARY KEY,
+    user1 INT,
+    user2 INT,
+    user1Hand VARCHAR,
+    isActive BOOLEAN
 );
