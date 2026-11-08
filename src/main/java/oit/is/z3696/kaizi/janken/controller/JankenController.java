@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import oit.is.z3696.kaizi.janken.model.Janken;
-import oit.is.z3696.kaizi.janken.model.MatchMapper;
 import oit.is.z3696.kaizi.janken.model.Entry;
 import oit.is.z3696.kaizi.janken.model.User;
 import oit.is.z3696.kaizi.janken.model.UserMapper;
