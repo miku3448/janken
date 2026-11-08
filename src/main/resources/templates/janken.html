@@ -20,6 +20,14 @@
     </ul>
   </div>
 
+  <h2>アクティブな試合</h2>
+  <div th:each="activeMatch :${activeMatch}">
+    id: [[${activeMatch.matchId}]]
+    user1: [[${activeMatch.user1}]]
+    user2: [[${activeMatch.user2}]]
+    isActive: [[${activeMatch.isActive}]] <br />
+  </div>
+
   <h2>試合結果</h2>
   <div th:each="match :${matches}">
     id: [[${match.matchId}]]
