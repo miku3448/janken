@@ -78,29 +78,42 @@ public class JankenController {
     User user2 = userMapper.selectById(id);
     model.addAttribute("user2", user2);
 
-    Janken janken = new Janken(userHand);
-    model.addAttribute("user1_hand", janken.getUserHand());
-    model.addAttribute("user2_hand", janken.getCpuHand());
-    model.addAttribute("result", janken.getResult());
+    // 試合中の試合を探す
+    ArrayList<MatchInfo> activeMatch = matchInfoMapper.selectActiveMatchByUserId(user2.getUserId());
 
-    // このMatchをmatchテーブルへinsert
-    Match match = new Match();
-    match.setUser1(user1.getUserId());
-    match.setUser2(user2.getUserId());
-    match.setUser1Hand(janken.getUserHand());
-    match.setUser2Hand(janken.getCpuHand());
+    if (activeMatch.isEmpty()) {
+      // このMatchをmatchinfoテーブルへinsert
+      MatchInfo matchinfo = new MatchInfo();
+      matchinfo.setUser1(user1.getUserId());
+      matchinfo.setUser2(user2.getUserId());
+      matchinfo.setUser1Hand(userHand);
+      matchinfo.setIsActive();
 
-    matchMapper.insertMatch(match);
+      matchInfoMapper.insertMatchinfo(matchinfo);
+    } else {
+      MatchInfo matchinfo = activeMatch.get(0);
 
-    // このMatchをmatchinfoテーブルへinsert
-    MatchInfo matchinfo = new MatchInfo();
-    matchinfo.setUser1(user1.getUserId());
-    matchinfo.setUser2(user2.getUserId());
-    matchinfo.setUser1Hand(janken.getUserHand());
-    matchinfo.setIsActive();
+      Janken janken = new Janken(matchinfo.getUser1Hand(), userHand);
+      model.addAttribute("user1_hand", janken.getUserHand());
+      model.addAttribute("user2_hand", janken.getCpuHand());
+      model.addAttribute("result", janken.getResult());
 
-    matchInfoMapper.insertMatchinfo(matchinfo);
-    model.addAttribute("matchinfo", matchinfo);
+      // このMatchをmatchテーブルへinsert
+      Match match = new Match();
+      match.setUser1(user1.getUserId());
+      match.setUser2(user2.getUserId());
+      match.setUser1Hand(janken.getUserHand());
+      match.setUser2Hand(janken.getCpuHand());
+      match.setIsActive(true);
+
+      matchMapper.insertMatch(match);
+
+      model.addAttribute("match", match);
+
+      // matchinfoのisActiveを更新
+      matchinfo.setIsActive();
+      matchInfoMapper.updateMatchinfo(matchinfo);
+    }
 
     return "wait.html";
   }

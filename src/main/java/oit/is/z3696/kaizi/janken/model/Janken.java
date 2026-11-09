@@ -2,11 +2,12 @@ package oit.is.z3696.kaizi.janken.model;
 
 public class Janken {
   private String userHand;
-  private String cpuHand = "Gu";
+  private String cpuHand;
   private String result;
 
-  public Janken(String userHand) {
+  public Janken(String userHand, String cpuHand) {
     this.userHand = userHand;
+    this.cpuHand = cpuHand;
 
     if (userHand.equals(cpuHand)) {
       result = "Tie";

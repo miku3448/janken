@@ -10,13 +10,13 @@
   <h1>相手の手を待ってます</h1>
   <p>Hi [[${login_user}]]</p>
 
-  <div th:if="#{matchinfo}">
+  <div th:if="${match}">
     <h2>結果</h2>
-    Match: id [[#{matchinfo.matchid}]]
-    user1: [[#{matchinfo.user1}]]
-    user2: [[#{matchinfo.user2}]]
-    user1Hand: [[#{matchinfo.user1Hand}]]
-    user2Hand: [[#{matchinfo.user2Hand}]]
+    Match: id [[${match.matchId}]]
+    user1: [[${match.user1}]]
+    user2: [[${match.user2}]]
+    user1Hand: [[${match.user1Hand}]]
+    user2Hand: [[${match.user2Hand}]]
   </div>
 </body>
 
