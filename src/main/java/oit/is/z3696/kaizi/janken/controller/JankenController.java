@@ -1,5 +1,6 @@
 package oit.is.z3696.kaizi.janken.controller;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 
@@ -7,10 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import oit.is.z3696.kaizi.janken.model.Janken;
 import oit.is.z3696.kaizi.janken.model.Entry;
@@ -20,6 +20,7 @@ import oit.is.z3696.kaizi.janken.model.Match;
 import oit.is.z3696.kaizi.janken.model.MatchInfo;
 import oit.is.z3696.kaizi.janken.model.MatchMapper;
 import oit.is.z3696.kaizi.janken.model.MatchInfoMapper;
+import oit.is.z3696.kaizi.janken.service.AsyncKekka;
 
 @Controller
 public class JankenController {
@@ -116,5 +117,23 @@ public class JankenController {
     }
 
     return "wait.html";
+  }
+
+  @Autowired
+  private AsyncKekka asyncKekka;
+
+  @GetMapping("/sse/kekka")
+  public SseEmitter kekka() {
+
+    SseEmitter emitter = new SseEmitter(0L);
+
+    try {
+      asyncKekka.updata(emitter);
+    } catch (IOException e) {
+      e.printStackTrace();
+      emitter.completeWithError(e);
+    }
+
+    return emitter;
   }
 }
