@@ -17,7 +17,9 @@ import oit.is.z3696.kaizi.janken.model.Entry;
 import oit.is.z3696.kaizi.janken.model.User;
 import oit.is.z3696.kaizi.janken.model.UserMapper;
 import oit.is.z3696.kaizi.janken.model.Match;
+import oit.is.z3696.kaizi.janken.model.MatchInfo;
 import oit.is.z3696.kaizi.janken.model.MatchMapper;
+import oit.is.z3696.kaizi.janken.model.MatchInfoMapper;
 
 @Controller
 public class JankenController {
@@ -29,6 +31,9 @@ public class JankenController {
 
   @Autowired
   private MatchMapper matchMapper;
+
+  @Autowired
+  private MatchInfoMapper matchInfoMapper;
 
   @GetMapping("/janken")
   public String janken(ModelMap model, Principal prin) {
@@ -42,6 +47,9 @@ public class JankenController {
 
     ArrayList<Match> matches = matchMapper.selectAllMatch();
     model.addAttribute("matches", matches);
+
+    ArrayList<MatchInfo> activeMatch = matchInfoMapper.selectActiveMatches();
+    model.addAttribute("activeMatch", activeMatch);
 
     return "janken.html";
   }
@@ -75,7 +83,7 @@ public class JankenController {
     model.addAttribute("user2_hand", janken.getCpuHand());
     model.addAttribute("result", janken.getResult());
 
-    // このMatchをinsert
+    // このMatchをmatchテーブルへinsert
     Match match = new Match();
     match.setUser1(user1.getUserId());
     match.setUser2(user2.getUserId());
@@ -84,6 +92,16 @@ public class JankenController {
 
     matchMapper.insertMatch(match);
 
-    return "match.html";
+    // このMatchをmatchinfoテーブルへinsert
+    MatchInfo matchinfo = new MatchInfo();
+    matchinfo.setUser1(user1.getUserId());
+    matchinfo.setUser2(user2.getUserId());
+    matchinfo.setUser1Hand(janken.getUserHand());
+    matchinfo.setIsActive();
+
+    matchInfoMapper.insertMatchinfo(matchinfo);
+    model.addAttribute("matchinfo", matchinfo);
+
+    return "wait.html";
   }
 }
