@@ -10,14 +10,52 @@
   <h1>相手の手を待ってます</h1>
   <p>Hi [[${login_user}]]</p>
 
-  <div th:if="${match}">
-    <h2>結果</h2>
-    Match: id [[${match.matchId}]]
-    user1: [[${match.user1}]]
-    user2: [[${match.user2}]]
-    user1Hand: [[${match.user1Hand}]]
-    user2Hand: [[${match.user2Hand}]]
-  </div>
+  <div id="kekka"></div>
+
+  <script>
+    window.onload = function () {
+      var sse = new EventSource('/sse/kekka');
+
+      sse.onmessage = function (event) {
+
+        // JSONオブジェクトに変換
+        var matches_list = JSON.parse(event.data);
+
+        var kekka_html = "";
+
+        // 対戦結果
+        kekka_html += "<h2>結果</h2>";
+
+        for (var i = 0; i < matches_list.length; i++) {
+
+          kekka_html += "<p>Match: id "
+            + matches_list[i].matchId + "</p>";
+
+          kekka_html += "<p>user1: "
+            + matches_list[i].user1 + "</p>";
+
+          kekka_html += "<p>user2: "
+            + matches_list[i].user2 + "</p>";
+
+          kekka_html += "<p>user1Hand: "
+            + matches_list[i].user1Hand + "</p>";
+
+          kekka_html += "<p>user2Hand: "
+            + matches_list[i].user2Hand + "</p>";
+        }
+
+        // 戻るリンク
+        kekka_html += "<a href='/'>戻る</a>";
+
+        // HTMLを書き換える
+        var kekka = document.getElementById("kekka");
+        kekka.innerHTML = kekka_html;
+
+        // SSE終了
+        sse.close();
+      };
+    }
+  </script>
 </body>
 
 </html>
